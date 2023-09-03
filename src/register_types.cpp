@@ -4,13 +4,20 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
+#include "projectile_server_2d.hpp"
+#include "projectile_spawner_2d.hpp"
+#include "projectile_trajectory_2d.hpp"
+
 using namespace godot;
 
 void initialize_gdextension_types(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	//ClassDB::register_class<GDExample>();
+
+	ClassDB::register_class<ProjectileServer2D>();
+	ClassDB::register_class<ProjectileSpawner2D>();
+	ClassDB::register_class<ProjectileTrajectory2D>();
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

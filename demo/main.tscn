@@ -1,0 +1,66 @@
+[gd_scene load_steps=12 format=3 uid="uid://doa3docx8d0y6"]
+
+[ext_resource type="Texture2D" uid="uid://bf7jslu7nl67f" path="res://projectile.tres" id="1_tl56q"]
+[ext_resource type="Script" path="res://multimesh.gd" id="3_dimmc"]
+[ext_resource type="Script" path="res://spawner.gd" id="3_kch1j"]
+[ext_resource type="Script" path="res://linear_trajectory_2d.gd" id="4_6y14y"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_p3hvb"]
+size = Vector2(8, 8)
+
+[sub_resource type="MultiMesh" id="MultiMesh_mmjfw"]
+mesh = SubResource("QuadMesh_p3hvb")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_3tfyl"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_e0e4r"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_k02nk"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_fihc7"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xl22j"]
+radius = 3.0
+
+[node name="Main" type="Node2D"]
+
+[node name="ProjectileServer2D" type="ProjectileServer2D" parent="."]
+
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="." node_paths=PackedStringArray("projectile_server")]
+texture_filter = 1
+multimesh = SubResource("MultiMesh_mmjfw")
+texture = ExtResource("1_tl56q")
+script = ExtResource("3_dimmc")
+projectile_server = NodePath("../ProjectileServer2D")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 300)
+shape = SubResource("WorldBoundaryShape2D_3tfyl")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -300)
+shape = SubResource("WorldBoundaryShape2D_e0e4r")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-300, 0)
+shape = SubResource("WorldBoundaryShape2D_k02nk")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(300, 0)
+shape = SubResource("WorldBoundaryShape2D_fihc7")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="PlayerProjectileSpawner" type="ProjectileSpawner2D" parent="."]
+projectile_server_path = NodePath("../ProjectileServer2D")
+projectile_shape = SubResource("CircleShape2D_xl22j")
+script = ExtResource("3_kch1j")
+
+[node name="LinearTrajectory2D" type="ProjectileTrajectory2D" parent="PlayerProjectileSpawner"]
+script = ExtResource("4_6y14y")
